@@ -1,35 +1,117 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { useProducts } from "@/context/ProductContext";
+import { Colors } from "@/utils/theme";
+import { Tabs } from "expo-router";
+import { StyleSheet, Text, View } from "react-native";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+function VaultTabIcon({ focused }: { focused: boolean }) {
+  return (
+    <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+      <Text style={styles.iconEmoji}>📦</Text>
+    </View>
+  );
+}
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+function AddTabIcon({ focused }: { focused: boolean }) {
+  const { isAtLimit } = useProducts();
+  return (
+    <View
+      style={[
+        styles.addIconWrap,
+        focused && styles.addIconWrapActive,
+        isAtLimit && styles.addIconDisabled,
+      ]}
+    >
+      <Text
+        style={[styles.addIconText, isAtLimit && styles.addIconTextDisabled]}
+      >
+        +
+      </Text>
+    </View>
+  );
+}
 
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: Colors.accent,
+        tabBarInactiveTintColor: Colors.textSecondary,
+        tabBarLabelStyle: styles.tabLabel,
+        tabBarShowLabel: true,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Vault",
+          tabBarIcon: ({ focused }) => <VaultTabIcon focused={focused} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="add"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Add Product",
+          tabBarIcon: ({ focused }) => <AddTabIcon focused={focused} />,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: Colors.surface,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    height: 64,
+    paddingBottom: 10,
+    paddingTop: 6,
+    elevation: 0,
+    shadowOpacity: 0,
+  },
+  tabLabel: {
+    fontSize: 10,
+    fontWeight: "600",
+    letterSpacing: 0.3,
+  },
+  iconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  iconWrapActive: {
+    backgroundColor: Colors.accentMuted,
+  },
+  iconEmoji: {
+    fontSize: 16,
+  },
+  addIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: Colors.accent,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  addIconWrapActive: {
+    backgroundColor: Colors.accentDim,
+  },
+  addIconDisabled: {
+    backgroundColor: Colors.surfaceAlt,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+  },
+  addIconText: {
+    fontSize: 22,
+    color: Colors.textInverse,
+    lineHeight: 26,
+    fontWeight: "300",
+  },
+  addIconTextDisabled: {
+    color: Colors.textDisabled,
+  },
+});
