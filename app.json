@@ -51,6 +51,12 @@
         "projectId": "1cbc3751-6ec9-44e2-aeb0-cff05821f2bf"
       }
     },
-    "owner": "cardinalsparrow"
+    "owner": "cardinalsparrow",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1cbc3751-6ec9-44e2-aeb0-cff05821f2bf"
+    }
   }
 }

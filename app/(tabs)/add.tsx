@@ -5,7 +5,6 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/FormField";
 import ImagePickerButton from "../../components/ImagePickerButton";
 import { MAX_PRODUCTS, useProducts } from "../../context/ProductContext";
